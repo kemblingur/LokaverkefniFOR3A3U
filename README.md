@@ -18,6 +18,7 @@ pre-reqs: install node.js: http://nodejs.org/
 ```
 $ git clone git@github.com:unomateo/node-quiz.git quiz
 $ cd quiz
+$ npm install
 $ node app.js
 ```
 
