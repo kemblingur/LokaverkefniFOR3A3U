@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.css' />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+    	var socket = io.connect('http://localhost:3000');
+      var connected = false;
+      var username = '';
+      var questions;
+
+      socket.on('newUserList', function(data){
+        $(".connectedUsers").html('');
+        $.each(data.userList, function(i, user){
+          $(".connectedUsers").append("<div id='"+user+"'><span class='username'>" + user + "</span> : <span class='points'>0</span></div>");
+        });
+      });
+
+      socket.on('updateUserList', function(data){
+    
+        if(data.connectionType ==  'add'){
+          $(".connectedUsers").append("<div id='"+data.user+"'><span class='username'>" + data.user + "</span> : <span class='points'>0</span></div>");
+        } else {
+          $("#"+data.user).remove();
+        }
+      });
+
+      socket.on('sendQuestions', function(data){
+        $(".show_index").fadeOut('slow', function(){
+          location.replace("#1");
+          question = get_question(0);
+          $(".show_questions").fadeIn('slow');
+        });
+        console.log(data);
+        questions = data.questions;
+      });
+
+      function get_question(number){
+          var question = questions[number];
+          $("#question").data('index', number); 
+          $("#question_title").text("").text(question.question);
+          $("#question_options").html("");
+          $.each(question.choices, function(i, item){
+            $("#question_options").append("<div><input type='checkbox' value='"+i+"'/> "+item+"</div>");
+          });
+          $("#correctAnswer").text("").text(question.correctAnswer);
+      }
+
+      $(document).ready(function(){
+        $('#btnJoin').on('click', function(){
+          username = prompt("Username bitch");
+          if(username !=''){
+            socket.emit('addUser', username);
+            connected = true;
+          } else {
+            alert("USERNAME PLEASE!");
+          }
+        });
+      });
+
+    </script>
+  </head>
+  <body>
+    <div class='container-fluid'>
+      <div class='row'>
+        <div class='span12'>
+          <h1>Lokaverkefni</h1>
+        </div>
+      </div>
+      <div class='row'>
+        <div class='span4'>
+          <div class='well'>
+            <h3>Leikmenn</h3>
+            <div class='connectedUsers'>
+
+            </div>
+          </div>
+        </div>
+        <div class='span8'>
+          <div class='hero-unit'>
+            <div class="show_index">
+              <button id='btnJoin' class='btn btn-primary'>Hefja spurningaleikinn</button>
+            </div>
+            <div class='show_questions' style='display:none;'>
+              <div id='question' data-index="">
+                <h3 id='question_title'></h3>
+                <div id='question_options'></div>
+                <button class='btn btn-success' id="checkAnswer">Skrá svar</button>
+                <div style='display:none;' id="correctAnswer"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='span4'>
+          <div class='well'>
+            <h3>Upplýsingar</h3>
+            <div class='Scoreboard'>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script type="text/javascript">
+  $("#checkAnswer").click(function () {
+    //find the index of the correct answer to the question
+    var correctAnswer = $(this).siblings('#correctAnswer').text();
+    console.log(correctAnswer);
+    //find the selected index by the user
+    var selectedAnswer = $(this).siblings('#question_options').find("input:checked").val()
+    console.log(selectedAnswer);
+    if (selectedAnswer == correctAnswer) {
+      alert("correct");
+      updateScore(username);
+    }
+    else{
+      alert("incorrect");
+    }
+    var nextQuestion = $("#question").data('index') + 1;
+    if (nextQuestion == questions.length) {
+      console.log("Game Over");
+    }
+    else{
+      get_question(nextQuestion);
+    }
+  });
+  function updateScore(user) {
+    var originalScore = $("#" + user).find(".points").text();
+    console.log(originalScore);
+    var newScore = parseInt(originalScore) + 1;
+    console.log(newScore);
+    $("#" + user).find(".points").text("");
+    $("#" + user).find(".points").text(newScore);
+  }
+</script>
