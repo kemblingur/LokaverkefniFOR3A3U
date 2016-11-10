@@ -58,7 +58,7 @@
 
       $(document).ready(function(){
         $('#btnJoin').on('click', function(){
-          username = prompt("Username bitch");
+          username = prompt("Username please ??");
           if(username !=''){
             socket.emit('addUser', {username:username, points:0});
             connected = true;
