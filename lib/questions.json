@@ -1,6 +1,6 @@
 {"questions":[
-	{"question": "Hver er forsætisráðherra Breta?", "choices": ["David Cameron", "Gordon Brown", "Winston Churchill", "Tony Blair"], "correctAnswer":0},
-	{"question": "Hérna er spurning", "choices": ["Þetta svar gæti verið rétt?", "En þetta gæti líka verið það?"], "correctAnswer":0},
-	{"question": "Hvað er uppáhalds liturinn minn?", "choices": ["Svartur", "Blár", "Gulur", "Grænn"], "correctAnswer":1},
-	{"question": "Hver er tilgangur lífsins?", "choices": ["Hversu ömurleg spurning", "Vá gaur, reyndu betur"], "correctAnswer":1}
+	{"question": "Hver er forsætisráðherra Breta?", "choices": ["David Cameron", "Theresa May", "Winston Churchill", "Tony Blair"], "correctAnswer":1},
+	{"question": "Forseti Bandaríkjana er ?", "choices": ["Barack Obama", "Donald Trump","Hillary Clinton","Eyþór Máni Steinarsson"], "correctAnswer":1},
+	{"question": "Hvað er heimilisfangið á vörðuskóla ?", "choices": ["Egilsgata 2", "Laugarvegur 15", "Skólavörðustígur", "Barónsstígur"], "correctAnswer":2},
+	{"question": "Hver er tilgangur lífsins?", "choices": ["Fitna", "Fitna af visku","Allir fyrri valmöguleikar eru réttir"], "correctAnswer":2}
 ]}
